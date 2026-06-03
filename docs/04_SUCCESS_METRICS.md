@@ -177,9 +177,14 @@ unified supporter identity — see `06_ARCHITECTURE.md`.
 Constraint: **no new SaaS spend.** Free tools and free tiers only.
 Required to make this framework measurable:
 
-1. **Web analytics: GA4 (free).** Access is incoming. Once active, set up
-   conversion events for every CTA listed under G2 in `02_GOALS.md`.
-   Backfill the "unknown" baseline rows above on first review.
+1. **Web analytics: GA4 (free).** UI access obtained; **first baseline
+   captured 2026-06-03** → `analytics/ga-exports/2026-05-06_to_2026-06-02/`
+   (traffic, landing pages, pages, events, devices). Enhanced measurement is
+   on (`form_submit`, `scroll`, `click`, `file_download` already firing), but
+   **zero conversions are configured** — that's the next step: mark
+   `form_submit`/donate as key events and add conversion events for every CTA
+   listed under G2 in `02_GOALS.md`. Backfill the "unknown" traffic/engagement
+   rows above from the snapshot; outcome rows wait on conversion setup.
 2. **Search Console (free):** verify domain ownership; set up keyword and
    page-performance reports. Recommend doing this alongside GA setup.
 3. **Heatmap / session replay (optional):** Microsoft Clarity (free, no

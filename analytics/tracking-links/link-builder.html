@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSP Link Tagger</title>
+<style>
+  :root { --brand:#1b6e4d; --bg:#f7f7f5; --line:#d9d9d4; }
+  * { box-sizing: border-box; }
+  body { font: 16px/1.5 system-ui, sans-serif; margin: 0; background: var(--bg); color: #1a1a1a; }
+  main { max-width: 640px; margin: 0 auto; padding: 24px 20px 64px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  p.lede { margin: 0 0 12px; color: #555; }
+  ol.steps { margin: 0 0 8px; padding-left: 20px; color: #444; font-size: 14px; }
+  ol.steps li { margin-bottom: 6px; }
+  label { display: block; font-weight: 600; margin: 16px 0 4px; font-size: 14px; }
+  .hint { font-weight: 400; color: #777; font-size: 13px; }
+  input, select { width: 100%; padding: 10px; font-size: 16px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+  button.copy { padding: 8px 14px; font-size: 14px; font-weight: 600; color: #fff; background: var(--brand); border: 0; border-radius: 6px; cursor: pointer; }
+  .out { margin-top: 24px; padding: 18px; background: #fff; border: 1px solid var(--line); border-radius: 8px; }
+  .out.hidden { display: none; }
+  .v { font-family: ui-monospace, monospace; font-size: 14px; word-break: break-all; background: var(--bg); padding: 10px; border-radius: 6px; border: 1px solid var(--line); margin-bottom: 12px; }
+  .err { color: #a11; }
+  .manual.hidden { display: none; }
+  details { margin-top: 28px; font-size: 14px; color: #555; }
+  summary { cursor: pointer; font-weight: 600; }
+  code { background: #eee; padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>DSP Link Tagger</h1>
+  <p class="lede">Adds a hidden tag to a link so Google Analytics can show <b>where the traffic came from</b> — which email or post drove someone to the site.</p>
+
+  <ol class="steps">
+    <li><b>Paste the link</b> you're going to share. For one of our own pages you can paste just the path — <code>/get-involved/</code> — and it fills in the rest.</li>
+    <li><b>Pick where it's going out</b> (email, Instagram, …).</li>
+    <li><b>Name the campaign</b> — what this send is about, e.g. <code>june-2026</code>. Use the <i>same</i> name on every link in one email.</li>
+    <li><b>Copy the tagged link</b> and paste it where your link would normally go in Mailchimp or the social post. Done — nothing to save here.</li>
+  </ol>
+
+  <label>Link <span class="hint">full URL, or just a path like /get-involved/ for our own site</span></label>
+  <input id="dest" placeholder="/get-involved/  or  https://secure.actblue.com/donate/dsp" autocomplete="off">
+
+  <label>Where is this link going out? <span class="hint">sets the source/channel automatically</span></label>
+  <select id="channel">
+    <option value="newsletter|email">Email newsletter</option>
+    <option value="instagram|social">Instagram</option>
+    <option value="facebook|social">Facebook</option>
+    <option value="linkedin|social">LinkedIn</option>
+    <option value="twitter|social">Twitter / X</option>
+    <option value="bluesky|social">Bluesky</option>
+    <option value="__manual__">Something else…</option>
+  </select>
+
+  <div id="manual" class="manual hidden">
+    <label>Source <span class="hint">where the link lives, e.g. partner-site</span></label>
+    <input id="source" autocomplete="off">
+    <label>Medium <span class="hint">the channel, e.g. referral, email, social</span></label>
+    <input id="medium" autocomplete="off">
+  </div>
+
+  <label>Campaign <span class="hint">which send / what it's about — e.g. june-2026, donate-yearend</span></label>
+  <input id="campaign" placeholder="june-2026" autocomplete="off">
+
+  <label>Which button? <span class="hint">optional — only if two links in the same send go to the same place</span></label>
+  <input id="content" placeholder="header-button" autocomplete="off">
+
+  <div id="out" class="out hidden"></div>
+
+  <details>
+    <summary>Naming rules (the tool enforces these)</summary>
+    <p>Everything is forced to <b>lowercase with hyphens, no spaces or punctuation</b>, because Google Analytics treats <code>June 2026</code>, <code>june-2026</code>, and <code>June-2026</code> as three different campaigns. Use the <b>same campaign name</b> for every link in one send so they group together.</p>
+  </details>
+</main>
+
+<script>
+"use strict";
+
+function clean(s) {
+  return (s || "").trim().toLowerCase()
+    .replace(/[\s_]+/g, "-").replace(/[^a-z0-9-]/g, "")
+    .replace(/-+/g, "-").replace(/^-|-$/g, "");
+}
+
+// Turn a partial link into a full URL. A path like "/get-involved/" or
+// "get-involved/" becomes a denverstreetspartnership.org URL; a bare domain
+// gets https:// added; a full URL is left alone.
+const DSP_BASE = "https://denverstreetspartnership.org";
+function normalizeUrl(raw) {
+  let s = (raw || "").trim();
+  if (!s) return "";
+  if (/^https?:\/\//i.test(s)) return s;                 // already full
+  if (/^[a-z0-9.-]+\.[a-z]{2,}(\/|\?|#|$)/i.test(s)) return "https://" + s; // bare domain
+  return DSP_BASE + "/" + s.replace(/^\/+/, "");          // path on our site
+}
+
+function channelParts() {
+  const v = document.getElementById("channel").value;
+  if (v === "__manual__") {
+    return [clean(document.getElementById("source").value), clean(document.getElementById("medium").value)];
+  }
+  return v.split("|");
+}
+
+function render() {
+  const out = document.getElementById("out");
+  out.classList.remove("hidden");
+
+  const dest = normalizeUrl(document.getElementById("dest").value);
+  const [source, medium] = channelParts();
+  const campaign = clean(document.getElementById("campaign").value);
+  const content = clean(document.getElementById("content").value);
+
+  if (!dest) { out.innerHTML = '<p class="err">Paste a link or a page path first.</p>'; return; }
+  if (!source || !medium) { out.innerHTML = '<p class="err">Fill in source and medium.</p>'; return; }
+  if (!campaign) { out.innerHTML = '<p class="err">Add a campaign name.</p>'; return; }
+
+  let url;
+  try { url = new URL(dest); } catch (e) { out.innerHTML = '<p class="err">That doesn\'t look like a valid link.</p>'; return; }
+  url.searchParams.set("utm_source", source);
+  url.searchParams.set("utm_medium", medium);
+  url.searchParams.set("utm_campaign", campaign);
+  if (content) url.searchParams.set("utm_content", content);
+
+  out.innerHTML = '<div class="v" id="tagged">' +
+    url.toString().replace(/&/g, "&amp;").replace(/</g, "&lt;") +
+    '</div><button class="copy" id="copy">Copy tagged link</button>';
+}
+
+document.querySelectorAll("input, select").forEach(el => {
+  el.addEventListener("input", () => {
+    document.getElementById("manual").classList.toggle(
+      "hidden", document.getElementById("channel").value !== "__manual__");
+    render();
+  });
+});
+
+document.addEventListener("click", e => {
+  if (e.target && e.target.id === "copy") {
+    navigator.clipboard.writeText(document.getElementById("tagged").textContent).then(() => {
+      e.target.textContent = "Copied"; setTimeout(() => e.target.textContent = "Copy tagged link", 1200);
+    });
+  }
+});
+</script>
+</body>
+</html>

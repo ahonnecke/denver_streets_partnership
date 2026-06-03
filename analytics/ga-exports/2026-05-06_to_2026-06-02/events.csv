@@ -1,0 +1,20 @@
+# ----------------------------------------
+# Events: Event name
+# Account: Denver Streets Partnership
+# Property: Denver Streets Partnership
+# ----------------------------------------
+# 
+# All Users
+# Start date: 20260506
+# End date: 20260602
+Event name,Event count,Total users,Event count per active user,Total revenue
+page_view,3558,1841,1.9549450549450549,0
+session_start,2444,1845,1.3435953820780648,0
+first_visit,1752,1748,1.002288329519451,0
+user_engagement,1694,829,2.1228070175438596,0
+scroll,906,494,1.8489795918367347,0
+click,377,248,1.5263157894736843,0
+form_start,98,50,1.96,0
+file_download,38,28,1.3571428571428572,0
+form_submit,14,10,1.4,0
+view_search_results,2,2,1,0

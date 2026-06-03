@@ -1,0 +1,6 @@
+# Never commit the GA service-account key or any credentials.
+*.json
+ga-key.json
+.venv/
+__pycache__/
+*.pyc

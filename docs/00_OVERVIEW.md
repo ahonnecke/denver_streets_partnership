@@ -88,10 +88,13 @@ See `05_RECOMMENDATIONS.md` and `06_ARCHITECTURE.md` for detail.
 
 ## Caveats
 
-- **Google Analytics access is incoming, not yet available.** "Unknown
-  baseline" rows in `04_SUCCESS_METRICS.md` will be filled on the next
-  pass once GA data is in hand. Until then, recommendations involving
-  traffic, bounce, and SEO position are hypothesis-driven.
+- **Google Analytics — UI access obtained; first baseline captured 2026-06-03.**
+  Real numbers now live in
+  `analytics/ga-exports/2026-05-06_to_2026-06-02/` (see its `README.md`).
+  Traffic / landing / page / device baselines are no longer
+  hypothesis-driven. Still pending: programmatic (API) access, and any
+  *configured conversions* — zero exist today, so outcome/conversion rows
+  in `04_SUCCESS_METRICS.md` stay "unknown" until conversion events are set up.
 - Search Console access status: TBD. Recommend setting up alongside GA.
 - The audit was a content/IA/integration review, not a code or accessibility
   audit. A WCAG 2.2 AA conformance pass is recommended as a follow-up

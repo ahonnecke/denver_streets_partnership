@@ -1,0 +1,17 @@
+# ----------------------------------------
+# Traffic acquisition: Session primary channel group (Default Channel Group)
+# Account: Denver Streets Partnership
+# Property: Denver Streets Partnership
+# ----------------------------------------
+# 
+# All Users
+# Start date: 20260506
+# End date: 20260602
+Session primary channel group (Default Channel Group),Sessions,Engaged sessions,Engagement rate,Average engagement time per session,Events per session,Event count,Key events,Session key event rate,Total revenue
+Direct,1352,429,0.3173076923076923,23.8646449704142,4.09319526627219,5534,0,0,0
+Organic Search,821,499,0.607795371498173,45.158343483556635,5.018270401948842,4120,0,0,0
+Referral,184,96,0.5217391304347826,54.55978260869565,4.532608695652174,834,0,0,0
+Organic Social,62,43,0.6935483870967742,23.677419354838708,4.306451612903226,267,0,0,0
+Unassigned,18,5,0.2777777777777778,14.88888888888889,4.055555555555555,73,0,0,0
+Email,12,6,0.5,12.583333333333334,4,48,0,0,0
+Organic Video,1,1,1,15,7,7,0,0,0
