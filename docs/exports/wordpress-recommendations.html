@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WordPress Recommendations — Denver Streets Partnership</title>
+<style>
+  @page { size: letter; margin: 2cm; }
+  body { font-family: "Liberation Sans", Arial, sans-serif; font-size: 11pt; color: #1a1a1a; line-height: 1.45; }
+  h1 { font-size: 20pt; color: #1b6e4d; margin: 0 0 2pt; }
+  h2 { font-size: 14pt; color: #1b6e4d; border-bottom: 1.5pt solid #1b6e4d; padding-bottom: 2pt; margin: 18pt 0 8pt; }
+  h3 { font-size: 12pt; margin: 14pt 0 3pt; }
+  .meta { color: #555; font-size: 10pt; margin-bottom: 10pt; }
+  .banner { background: #fdeede; border: 1pt solid #e0a564; border-radius: 4pt; padding: 8pt 12pt; font-weight: bold; color: #8a4b00; margin: 10pt 0 16pt; }
+  table { border-collapse: collapse; width: 100%; font-size: 10pt; margin: 8pt 0; }
+  th, td { border: 0.5pt solid #bbb; padding: 5pt 7pt; text-align: left; vertical-align: top; }
+  th { background: #eef3f0; }
+  .chip { font-size: 9pt; font-weight: bold; padding: 1pt 6pt; border-radius: 8pt; white-space: nowrap; }
+  .vlow { background: #dff0e6; color: #1b6e4d; }
+  .low  { background: #eaf3dd; color: #4a6b16; }
+  .med  { background: #fdeede; color: #a85b00; }
+  .tag { display: inline-block; font-size: 9pt; color: #555; font-style: italic; }
+  .ask { background: #eef3f0; border-radius: 4pt; padding: 10pt 14pt; margin-top: 14pt; }
+  pre { background: #f4f4f2; border: 0.5pt solid #ccc; border-radius: 3pt; padding: 8pt; font-size: 9.5pt; white-space: pre-wrap; }
+  .num { color: #1b6e4d; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>WordPress Recommendations</h1>
+<div class="meta">denverstreetspartnership.org &nbsp;·&nbsp; June 3, 2026 &nbsp;·&nbsp; Prepared by Ashton</div>
+
+<div class="banner">PROPOSAL — no changes have been made. Nothing is done until the team signs off.</div>
+
+<p>We now have WordPress access, so we <i>can</i> make fixes — but we won't touch anything without group agreement. Below is each recommended change, why it matters (backed by real Google Analytics numbers from the last 28 days), how risky it is, and whether it can be undone. Approve the ones you want; we'll do them one at a time, safely.</p>
+
+<h2>How we'll make changes safely</h2>
+<ul>
+  <li><b>Back up first</b> — full WordPress + database backup before any edit.</li>
+  <li><b>Child theme, not the core theme</b> — so a future theme update can't wipe the fixes.</li>
+  <li><b>One at a time, verified</b> on desktop <i>and</i> mobile. Anything touching donations gets extra testing.</li>
+  <li><b>Nothing is one-way</b> — every item below can be rolled back.</li>
+</ul>
+
+<h2>Summary</h2>
+<table>
+<tr><th>#</th><th>Recommendation</th><th>Why it matters</th><th>Effort</th><th>Risk</th></tr>
+<tr><td class="num">1</td><td>Fix mobile pinch-zoom</td><td>35% of visitors are on mobile; current setting fails accessibility law</td><td>Low</td><td><span class="chip vlow">Very low</span></td></tr>
+<tr><td class="num">2</td><td>Give Donate one real URL</td><td>Donate traffic is split across 2 URLs and barely engaged</td><td>Med</td><td><span class="chip med">Medium</span></td></tr>
+<tr><td class="num">3</td><td>Fix broken volunteer link</td><td>Visitors who click it hit a dead end</td><td>Low</td><td><span class="chip low">Low</span></td></tr>
+<tr><td class="num">4</td><td>Remove dead analytics tag</td><td>Loads on every page, collects nothing since 2024</td><td>Low</td><td><span class="chip vlow">Very low</span></td></tr>
+<tr><td class="num">5</td><td>Update footer copyright</td><td>Says "© 2020" — looks abandoned</td><td>Low</td><td><span class="chip vlow">Very low</span></td></tr>
+<tr><td class="num">6</td><td>Security hygiene</td><td>Hide usernames, close an unused entry point</td><td>Low</td><td><span class="chip low">Low</span></td></tr>
+<tr><td class="num">7</td><td>Measurement setup</td><td>So we can finally see which page drives a donation</td><td>Med</td><td><span class="chip low">Low</span></td></tr>
+<tr><td class="num">8</td><td>Growth (content)</td><td>Repeat what's already working</td><td>High</td><td><span class="chip low">Low</span></td></tr>
+</table>
+
+<h2>The recommendations</h2>
+
+<h3>1. Fix mobile pinch-zoom <span class="tag">(confirmed live today)</span></h3>
+<p>The site currently blocks pinch-to-zoom on phones. We'd change it to the standard setting that lets people zoom. <b>35% of visitors are on mobile</b> (646 of ~1,820 users last month), and blocking zoom is an accessibility (WCAG) failure — a real issue for a public-interest org. <b>~10 min. Very low risk</b> — one line, instantly reversible.</p>
+
+<h3>2. Give Donate a single real URL <span class="tag">(confirmed live today)</span></h3>
+<p>Today the homepage opens a donate popup via a query-string link, and there's also a <code>/donate/</code> page — two URLs for the same action. We'd pick one canonical <code>/donate/</code> page and redirect the rest to it. Analytics shows donate traffic <b>split across both URLs</b>, with the popup version showing <b>0.8 seconds</b> of engagement. One URL means donations are countable, bookmarkable, and linkable from emails. <b>~30 min. Medium risk — this is the money path</b>, so it gets a full backup and click-through test. Reversible.</p>
+
+<h3>3. Fix the broken volunteer link <span class="tag">(from May 22 audit)</span></h3>
+<p>The volunteer call-to-action points at a Mailchimp survey URL that only works inside an email; on the website it dead-ends. We'd point it at a real signup page or embedded form. Volunteer signups is a stated goal; this link currently converts no one. <b>~15 min. Low risk.</b></p>
+
+<h3>4. Remove the dead analytics tag <span class="tag">(confirmed live today)</span></h3>
+<p>An old Universal Analytics tag still loads on every page. Google stopped processing its data on <b>July 1, 2024</b> — it collects nothing. We'd remove it; the current analytics (GA4 + Tag Manager) stay untouched. <b>~10 min. Very low risk</b> — it's already dead.</p>
+
+<h3>5. Update the footer copyright <span class="tag">(confirmed live — says "© 2020")</span></h3>
+<p>Change the footer to the current year, set to update automatically. A 2020 date signals an abandoned site to first-time visitors and funders. <b>~5 min. Very low risk.</b></p>
+
+<h3>6. Security hygiene <span class="tag">(from May 22 audit)</span></h3>
+<p>Hide WordPress usernames from public lookup and disable an unused remote-access entry point (XML-RPC). The audit found usernames are publicly exposed. Note: the host's firewall already blocks password-guessing attacks, so this is <b>cleanup, not an emergency</b> — but worth doing. <b>~30 min. Low risk</b> (we confirm nothing needs XML-RPC first).</p>
+
+<h3>7. Measurement setup <span class="tag">(needs Google Analytics access — separate from WordPress)</span></h3>
+<p>Mark donations and form submissions as "conversions" in Google Analytics, and tag the newsletter/social links so we can see where traffic comes from. Right now GA records <b>zero conversions</b> — it can't tell us if any page drives a donation or signup, though the visit data is fine. The form-submit events are <i>already being collected</i> (14 last month); they just need to be flagged. <b>Blocked on granting Ashton Editor access to Google Analytics</b> — does not require touching WordPress.</p>
+
+<h3>8. Growth — repeat what works <span class="tag">(content decision, not a quick fix)</span></h3>
+<p>The single best-performing page last month was the Colorado BRT comment guide (444 views, <b>56 seconds</b> average engagement) — an action/comment guide. We'd replicate that format for other campaigns and surface recent articles on the homepage. It's a proven pattern on your own site. This is a content/communications decision for the team.</p>
+
+<h2>What each item needs</h2>
+<ul>
+  <li><b>Items 1–6:</b> WordPress access only — ready to go on approval.</li>
+  <li><b>Item 7:</b> Google Analytics <b>Editor</b> access (pending) — no WordPress needed.</li>
+  <li><b>Item 8:</b> A content/communications decision by the team.</li>
+</ul>
+
+<h2>Evidence (live homepage check, June 3, 2026)</h2>
+<pre>viewport : blocks pinch-zoom (maximum-scale=1.0, user-scalable=0)
+dead tag : Universal Analytics UA-144848215-2 still present
+analytics: GA4 + Google Tag Manager — both live and good
+donate   : popup query-string link still on homepage (dual URL)
+footer   : © 2020 Denver Streets Partnership</pre>
+
+<div class="ask">
+<b>The ask:</b> Approve the items you want done (1–6 are low-risk; 2 gets extra care). We'll back up, make each change in a child theme, verify on mobile and desktop, and keep every step reversible. <b>Nothing happens until you say go.</b>
+</div>
+
+</body>
+</html>

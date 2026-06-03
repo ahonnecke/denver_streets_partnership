@@ -1,0 +1,13 @@
+*WordPress recommendations for the website* — heads up: nothing's been changed yet, this is for your sign-off.
+
+I went through the site and pulled the last month of Google Analytics. Eight recommended fixes, ranked. The fast, low-risk wins first:
+
+•  *Mobile zoom* — the site blocks pinch-to-zoom on phones, and 35% of our visitors are on mobile. Accessibility issue. ~10 min.
+•  *Donate link* — donations are split across two URLs and the popup version barely gets used. Consolidating to one /donate/ page makes it trackable and linkable. (This one we test carefully — it's the donation path.)
+•  *Broken volunteer link* — it currently dead-ends.
+•  *Dead analytics tag + "© 2020" footer* — small cleanups.
+•  A couple of security hygiene items — not urgent, the host already blocks attacks.
+
+Bigger picture: our top page by far is the Colorado BRT comment guide — people spend about a minute on it. That action-guide format is worth repeating on other campaigns.
+
+Full write-up with the reasoning and risk level on each is attached (PDF). Everything is reversible and done in a safe (child-theme) way, one at a time. Nothing happens until the group says go — just tell me which ones you want.
