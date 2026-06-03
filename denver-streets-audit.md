@@ -201,6 +201,30 @@ Ordered by **impact × ease**. Each is small enough to ship in a single PR / WP 
 19. **Route GA4 through GTM** rather than running both in parallel (§2d).
 20. **Add GA4 events for CTA clicks** (newsletter signup, donate-start, donate-complete, congress-signup) — set up via GTM. Measure funnel.
 21. **In Google Analytics, create funnel reports**: Article → Email Signup, Article → Donate, Home → Donate, Home → Email Signup. Compare to traffic volume to identify the weakest step.
+22. **Exclude staff/internal traffic** so DSP staff page-views don't inflate the numbers (§2d-quater). Tag logged-in WP users with `traffic_type=internal`, register it as a custom dimension, and activate the GA4 Internal Traffic data filter.
+
+### 2d-quater. Excluding staff (internal) traffic
+
+GA4 excludes internal traffic in **two parts**, and the filter alone does nothing — you must also *tag* the traffic:
+
+1. **Tag staff hits** with the event parameter `traffic_type = internal`.
+2. **Activate the Internal Traffic data filter** (GA4 → Admin → Data Settings → Data Filters), which drops anything tagged that way.
+
+For DSP, "staff" = logged-in WordPress users (they edit posts), so tag by **login state**, not by IP — IP filtering misses remote/home/mobile staff and breaks on dynamic IPs.
+
+**Implementation (login-based, recommended):**
+
+1. Emit login state into the dataLayer before GTM fires — WP child theme `functions.php` or a code-snippets plugin. Snippet lives in `analytics/wp-functions-snippet.php`.
+2. In GTM: create Data Layer Variable `dlv.traffic_type`, then on the GA4 Configuration/Event tag add field `traffic_type = {{dlv.traffic_type}}`. (Requires GA4 routed through GTM — item 19.)
+3. Register `traffic_type` as a **custom dimension** (GA4 → Admin → Custom definitions → Create custom dimension, event-scoped, parameter `traffic_type`). Needed so query scripts can filter/verify on it.
+4. Activate the **Internal Traffic** data filter in **Testing** mode first (creates an evaluable dimension without dropping data), verify staff hits show as internal, then flip to **Active**.
+
+**Caveats:**
+- The data filter is **not retroactive** — do this *before* the ~6-week data-collection window starts.
+- Leave it in **Testing** for a few days before going **Active**; Active is hard to undo cleanly.
+- IP-based fallback (only if staff share a known office IP): GA4 → Admin → Data Streams → web stream → Configure tag settings → *Show all* → **Define internal traffic** → rule `traffic_type = internal` for the IP range. Weak for a small/remote nonprofit; use login-based as primary.
+
+Query scripts in `analytics/` exclude `traffic_type=internal` at query time as belt-and-suspenders (and as the verification path while the filter is in Testing). Once the data filter is **Active**, query-side exclusion is redundant but harmless.
 
 ---
 

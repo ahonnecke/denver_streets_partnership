@@ -1,0 +1,40 @@
+#+title: June
+
+# Tracking links
+Need to get docs or tool to adrianne and jill for how to add tracking links to
+the email links, links from the email (I think) should 301 through dsp website
+
+# need to exclude "board" users (only record non-staff)
+● Short answer: GA4 excludes internal traffic in two parts — (1) tag staff hits with traffic_type = internal, then (2) activate the Internal Traffic data filter that drops anything tagged that way. The filter alone does nothing; you must also mark the traffic. Your stack is GA4
+  GT-WFFQB5TW + GTM GTM-TZJRKMV + Site Kit on WordPress, and "staff" here = logged-in WP users — so tag by login, not by IP.
+
+  Recommended: tag logged-in WP users (robust, survives remote/dynamic IPs)
+
+  1. Expose WP login state to the dataLayer. In the theme's functions.php (child theme, or a code snippets plugin):
+
+  add_action('wp_head', function () {
+      $is_staff = is_user_logged_in() ? 'internal' : 'external';
+      echo "<script>window.dataLayer = window.dataLayer || [];"
+         . "dataLayer.push({'traffic_type':'{$is_staff}'});</script>\n";
+  }, 1); // priority 1 = before GTM/Site Kit fire
+
+  2. In GTM create a Data Layer Variable dlv.traffic_type, then on your GA4 Configuration/Event tag add a field: parameter name traffic_type, value {{dlv.traffic_type}}. (If GA4 loads via Site Kit instead of GTM, route GA4 through GTM first — your audit already recommends this in
+  §2d, item 19.)
+
+  3. Activate the filter. GA4 → Admin → Data Settings → Data Filters → the predefined Internal Traffic filter matches traffic_type = internal by default. Set it to Testing first (creates an evaluable dimension without dropping data), confirm staff hits show as internal in the Test
+  traffic dimension, then flip to Active.
+
+  Quick fallback: IP-based (only if staff share known office IPs)
+
+  GA4 → Admin → Data Streams → your web stream → Configure tag settings → Show all → Define internal traffic → add rule traffic_type = internal for the IP range. Then activate the same Data Filter. Weak for a small/remote nonprofit — misses home/mobile staff and breaks on dynamic
+  IPs. Use the login method above as primary.
+
+  Notes
+
+  - The filter is not retroactive — it only drops data going forward, so do this before your ~6-week data-collection window starts (per audit-summary.md line 36).
+  - Leave it in Testing for a few days and verify before going Active; Active is hard to undo cleanly.
+  - Same traffic_type=internal flag also lets you build an exclude-internal segment in Explorations if you'd rather keep the raw data and filter at report time instead of dropping it permanently.
+
+  Want me to add this to the repo as a concrete task (the functions.php snippet + GTM steps) in the audit doc's P3 section, or stub the analytics/ query scripts to exclude traffic_type=internal?
+
+track search terms

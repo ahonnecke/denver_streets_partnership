@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Stage everything, commit, and push to the current branch — never main/master.
+# Usage: bin/ship "commit message (include any trailers)"
+set -euo pipefail
+
+msg="${1:?usage: bin/ship \"commit message\"}"
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+case "$branch" in
+  main|master)
+    echo "Refusing to commit on '$branch'. Branch first: git checkout -b <name>" >&2
+    exit 1
+    ;;
+esac
+
+git add -A
+git commit -q -m "$msg"
+git push -q -u origin "$branch"
+echo "shipped -> $branch"
