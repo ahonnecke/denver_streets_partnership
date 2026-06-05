@@ -31,7 +31,7 @@ planning/analytics workspace — not the website's code (the site is WordPress +
 
 **Google Analytics — do now (Admin granted):**
 1. **Mark conversions.** Flag `form_submit` (14/mo, already being collected) and a donate action as **key events** (GA4 Admin → Key events). This is the first time GA can attribute outcomes — the core gap.
-2. **Enable programmatic access.** Add service account `dsp-analytics-reader@dsp-analytics-ahonneck.iam.gserviceaccount.com` as a user + copy the 9-digit **property ID** → unblocks the stubbed `analytics/` Python report scripts.
+2. ~~Enable programmatic access.~~ **DONE** — service account granted Viewer; property ID `453687299`; all three `analytics/reports/*.py` pull live data (`source analytics/env.sh && .venv/bin/python analytics/reports/01_overview.py`).
 3. **Stand up CTA conversion events** (donate, newsletter, volunteer, congress) per G2 in `02_GOALS.md` — via GTM.
 4. **Backfill** the "unknown" baseline rows in `04_SUCCESS_METRICS.md` from the snapshot.
 
@@ -53,6 +53,7 @@ planning/analytics workspace — not the website's code (the site is WordPress +
 3. **Got WordPress access.** Re-verified the audit findings on the live homepage (viewport blocks zoom, dead UA loading, `?form=donate` dual URL, footer © 2020). Wrote `docs/07_WORDPRESS_RECOMMENDATIONS.md` — proposal only, no site changes; all fixes reversible, child-theme, one at a time.
 4. **Distributed the WP report** to the team (email + Slack; PDF + blurb). Asked Jill for GA Admin.
 5. **GA4 Admin granted.** Conversion config + programmatic access now self-serve → see Next steps.
+6. **Programmatic read-only access working.** Service account added as Viewer; property `453687299`; the report scripts pull live data — manual CSV export no longer required. (gmail-OAuth route abandoned: Google blocks the shared gcloud client from the analytics scope on consumer accounts.)
 
 ## Context
 - Trackers on site: GA4 `GT-WFFQB5TW` + GTM `GTM-TZJRKMV` (both live), dead `UA-144848215-2` (remove).
