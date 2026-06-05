@@ -14,15 +14,15 @@ Working goal: **make the website work, and make its performance measurable.** St
 (Jill, Adrienne) are non-technical. The `denver_streets_partnership` repo is the
 planning/analytics workspace — not the website's code (the site is WordPress + Divi).
 
-## Where things stand (2026-06-05)
+## Where things stand
 
 **Done**
 - First **GA4 baseline** captured and committed → `analytics/ga-exports/2026-05-06_to_2026-06-02/`.
 - **UTM link-tagger** built and hosted → `honnecke.us/utm.html`. Email-vs-social tagging decided.
 - **WordPress Recommendations report** written, exported to PDF (`docs/exports/`), and **distributed to the team**.
 
-**Unblocked today**
-- **GA4 Admin granted to Ashton (2026-06-05).** Clears the biggest dependency — conversion setup and programmatic access are now self-serve.
+**Unblocked**
+- **GA4 Admin granted to Ashton.** Clears the biggest dependency — conversion setup and programmatic access are now self-serve.
 
 **Pending on others**
 - Group **sign-off** on which WordPress fixes to do (report is out).
@@ -46,19 +46,18 @@ planning/analytics workspace — not the website's code (the site is WordPress +
 
 ---
 
-## Log
+## Log (in order)
 
-**2026-06-05** — Jill granted Ashton **GA4 Admin**. Unblocks conversion config (needs Editor) and the service-account add (needs Admin) in one grant. Conversion + programmatic-access work can proceed.
+1. **Looked at GA.** Got UI access; captured the first GA4 baseline (5 CSV exports → `analytics/ga-exports/`). Findings: ~2,450 sessions/mo; **55% Direct** (inflated by untagged email/social); Organic Search 33% with best engagement; **35% mobile**; donate is the weak point (dual URL, 0.8s engagement); `/colorado-brt-comment-guide/` is the standout page (444 views, 56s); **enhanced measurement is on** (`form_submit` already firing) but **zero conversions configured**. Corrected an earlier overstatement: GA's traffic data *is* usable — what's missing is *configured conversions* and *campaign attribution*, not a broken GA.
+2. **Built attribution tooling.** Hosted the UTM link-tagger (`analytics/tracking-links/link-builder.html` → `honnecke.us/utm.html`). Decision: **Mailchimp's built-in GA tracking for email, the tagger for social** (don't double-tag).
+3. **Got WordPress access.** Re-verified the audit findings on the live homepage (viewport blocks zoom, dead UA loading, `?form=donate` dual URL, footer © 2020). Wrote `docs/07_WORDPRESS_RECOMMENDATIONS.md` — proposal only, no site changes; all fixes reversible, child-theme, one at a time.
+4. **Distributed the WP report** to the team (email + Slack; PDF + blurb). Asked Jill for GA Admin.
+5. **GA4 Admin granted.** Conversion config + programmatic access now self-serve → see Next steps.
 
-**2026-06-04** — WordPress Recommendations report **distributed** to the team via email + Slack (PDF + plain-text blurb). Ashton **asked Jill for GA Admin**. *(date inferred — correct if off)*
-
-**2026-06-03** — Got **WordPress access**. Re-verified the audit's findings on the live homepage (viewport still blocks zoom, dead UA still loading, `?form=donate` dual URL, footer © 2020). Wrote `docs/07_WORDPRESS_RECOMMENDATIONS.md` for group sign-off — proposal only, no site changes. Stance: nothing edited without buy-in; all fixes reversible, child-theme, one at a time.
-
-**2026-06-03** — Captured the **first GA4 baseline** (5 CSV exports → `analytics/ga-exports/`). Findings: ~2,450 sessions/mo; **55% Direct** (inflated by untagged email/social); Organic Search 33% with best engagement; **35% mobile**; donate is the weak point (dual URL, 0.8s engagement); `/colorado-brt-comment-guide/` is the standout page (444 views, 56s); **enhanced measurement is on** (`form_submit` already firing) but **zero conversions configured**.
-
-**2026-06-03** — Built and hosted the **UTM link-tagger** (`analytics/tracking-links/link-builder.html` → live at `honnecke.us/utm.html`). Decision: **Mailchimp's built-in GA tracking for email, the tagger for social** (don't double-tag). Corrected an earlier overstatement: GA's traffic data *is* usable; what's missing is *configured conversions* and *campaign attribution*, not a broken GA.
-
-**Context** — Trackers on site: GA4 `GT-WFFQB5TW` + GTM `GTM-TZJRKMV` (both live), dead `UA-144848215-2` (remove). Hosting for the tagger: the honnecke.us Linode (`/home/ahonnecke/www/honnecke/`); `pixelstub.com` is Cloudflare elsewhere — don't deploy there.
+## Context
+- Trackers on site: GA4 `GT-WFFQB5TW` + GTM `GTM-TZJRKMV` (both live), dead `UA-144848215-2` (remove).
+- Baseline data window: **2026-05-06 → 06-02** — the one date that's load-bearing here (it's the period the numbers describe).
+- Hosting for the tagger: the honnecke.us Linode (`/home/ahonnecke/www/honnecke/`); `pixelstub.com` is Cloudflare elsewhere — don't deploy there.
 
 ---
 
