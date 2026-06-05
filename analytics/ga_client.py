@@ -68,7 +68,7 @@ def run_report(
     start_date: str = "28daysAgo",
     end_date: str = "yesterday",
     limit: int = 25,
-    exclude_internal: bool = True,
+    exclude_internal: bool = False,  # requires the traffic_type custom dimension; off until it's registered in GA4
 ):
     """Run a single GA4 runReport call, excluding staff traffic by default.
 

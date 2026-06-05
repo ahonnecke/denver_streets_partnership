@@ -23,7 +23,7 @@ def main() -> None:
         start_date="28daysAgo",
         end_date="yesterday",
         limit=50,
-        exclude_internal=True,  # drop DSP staff (traffic_type=internal)
+        exclude_internal=False,  # staff-exclusion parked: traffic_type custom dimension not registered
     )
     print_table(response)
 
