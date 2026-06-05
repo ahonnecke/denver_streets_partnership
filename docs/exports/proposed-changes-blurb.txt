@@ -1,0 +1,17 @@
+*Proposed website changes — for your OK*
+
+Nothing's been changed yet. Here's the plain-language list of what we'd recommend fixing on the site, what each does, and why (full version attached as a PDF). Done safely — backup first, one at a time, all reversible.
+
+The website changes that need your go-ahead:
+1.  Let people zoom on their phones (it's currently blocked — a third of visitors are on mobile)
+2.  One "Donate" link instead of two, so donations are countable (we test this one carefully)
+3.  Fix the broken volunteer link (it currently dead-ends)
+4.  Remove a dead tracking tag (stopped working in 2024)
+5.  Update the footer year (it still says 2020)
+6.  Tighten a couple of security basics (not urgent — the host already blocks attacks)
+
+Behind the scenes (no action needed from you): we're tagging our newsletter/social links and turning on goal tracking so Analytics can finally show which emails and pages drive donations and sign-ups.
+
+And one bigger idea worth a conversation: our best page by far is the Colorado BRT comment guide — people really engage with it. Worth building more pages in that "here's how to take action" format.
+
+Just reply with the numbers (1–6) you're comfortable with and we'll start there.
