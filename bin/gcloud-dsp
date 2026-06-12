@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# gcloud-in-docker wrapper for the DSP analytics project.
+# Persists auth + config under ~/.config/gcloud; key files land in ~/.config/dsp.
+set -euo pipefail
+
+IMAGE="${GCLOUD_IMAGE:-gcr.io/google.com/cloudsdktool/cloud-sdk:slim}"
+
+# Pull on first use only (fast no-op when cached).
+if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
+    echo "Pulling $IMAGE (first run only)..." >&2
+    docker pull "$IMAGE" >&2
+fi
+
+# Interactive flags only when stdin is a TTY.
+TTY_FLAGS=(-i)
+if [ -t 0 ]; then TTY_FLAGS+=(-t); fi
+
+exec docker run --rm \
+    "${TTY_FLAGS[@]}" \
+    --user "$(id -u):$(id -g)" \
+    -e HOME=/home/sdk \
+    -v "$HOME/.config/gcloud:/home/sdk/.config/gcloud" \
+    -v "$HOME/.config/dsp:/home/sdk/.config/dsp" \
+    -w /home/sdk \
+    "$IMAGE" \
+    gcloud "$@"
